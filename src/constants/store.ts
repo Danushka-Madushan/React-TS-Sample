@@ -1,6 +1,8 @@
 export const Items: {
   isComplete: boolean, task: string
-}[] = []
+}[] = [
+  { isComplete: true, task: 'Github is Awesome'}
+]
 
 export const States = {
   Check: {
