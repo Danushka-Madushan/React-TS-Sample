@@ -1,26 +1,20 @@
-
-name: Deploy to GitHub Pages
+name: React app deployment
 
 on:
   push:
-    branches: [main]
+    branches:
+      - "main" # change to the branch you wish to deploy from
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v4 
-          - name: Setup Node.js
-            uses: actions/setup-node@v4
-            with:
-                node-version: 20
-          - name: Install dependencies
-            run: npm ci
-          - name: Build React app
-            run: npm run build
-          - name: Deploy to GitHub Pages
-            uses: peaceiris/actions-gh-pages@v3
-            with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                publish_dir: ./build
-                publish_branch: build  # default: gh-pages
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - id: build-publish
+      uses: bitovi/github-actions-react-to-github-pages@v1.2.2
+      with:
+        path: build # change to your build folder
