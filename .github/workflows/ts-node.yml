@@ -15,9 +15,9 @@ jobs:
         node-version: [16.x, 18.x, 20.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -26,29 +26,29 @@ jobs:
 
   deploy:
     needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Node
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run gh-build
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+          node-version: '20'
+
+      - run: npm ci
+      - run: npm run gh-build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
         with:
-          # Upload dist repository
-          path: './dist'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+  
