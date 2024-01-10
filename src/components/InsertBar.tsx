@@ -33,7 +33,7 @@ export const InsertBar = ({ setItems }: {
           value={newItem}
           onChange={({ target: { value } }) => setnewItem(value)}
           className='bg-[#323130] p-2 text-white w-[100%] focus:outline-none text-base placeholder-[#78bafd]'
-          type="text" name="task" id="taskinput" placeholder='Add a Task'
+          type="text" name="task" id="taskinput" placeholder='Add a task'
         />
       </form>
       <div className='flex px-4 py-2'>
