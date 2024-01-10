@@ -26,29 +26,29 @@ jobs:
 
   deploy:
     needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
-      - run: npm ci
-      - run: npm run gh-build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run gh-build
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-  
+          # Upload dist repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
