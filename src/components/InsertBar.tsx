@@ -4,8 +4,6 @@ import { Items, States } from '../constants/store'
 export const InsertBar = ({ setItems }: {
   setItems: Dispatch<SetStateAction<typeof Items>>
 }) => {
-  const [IconCheck, setCheckIcon] = useState<{ path: string }>(States.Check.Initial)
-  const [IsComplete, setComplete] = useState<boolean>(false)
   const [newItem, setnewItem] = useState<string>('')
 
   const onFormSubmit = (event: FormEvent) => {
@@ -21,11 +19,8 @@ export const InsertBar = ({ setItems }: {
       <form onSubmit={onFormSubmit} className='flex border-b-[1px] border-b-[#ffffff41] px-3 pt-2'>
         <section className='pr-2 pl-2 flex items-center'>
           <svg
-            onMouseEnter={() => IsComplete ? false : setCheckIcon(States.Check.onChange)}
-            onMouseLeave={() => IsComplete ? false : setCheckIcon(States.Check.Initial)}
-            onClick={() => setComplete((cur) => !cur)}
             xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-            <path fill="#78bafd" d={IconCheck.path} />
+            <path fill="#78bafd" d={States.Check.Initial.path} />
           </svg>
         </section>
         <input
