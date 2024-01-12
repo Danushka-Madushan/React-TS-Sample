@@ -1,8 +1,7 @@
 name: Node.js CI Build
 
 on:
-  push:
-    branches: [ "main" ]
+  # Runs on pull requests targeting the default branch
   pull_request:
     branches: [ "main" ]
 
