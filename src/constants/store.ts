@@ -1,7 +1,7 @@
 export const Items: {
-  isComplete: boolean, task: string
+  isComplete: boolean, inFavourite: boolean, task: string
 }[] = [
-  { isComplete: true, task: 'Github is Awesome'}
+  { isComplete: true, inFavourite: true, task: 'Github is Awesome'}
 ]
 
 export const States = {
