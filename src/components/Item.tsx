@@ -1,7 +1,10 @@
-import { useState } from 'react'
-import { States } from '../constants/store'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { Items, States } from '../constants/store'
 
-export const Item = ({ task, isComplete, inFavourite }: { task: string, isComplete: boolean, inFavourite: boolean }) => {
+export const Item = ({ task, id, isComplete, inFavourite, setItems }: {
+  task: string, id: string, isComplete: boolean, inFavourite: boolean,
+  setItems: Dispatch<SetStateAction<typeof Items>>
+}) => {
   const [IconCheck, setCheckIcon] = useState<{ path: string }>(isComplete ? States.Check.onChange : States.Check.Initial)
   const [IconFav, setRemoveIcon] = useState<{ path: string }>(inFavourite ? States.Fav.onChange : States.Fav.Initial)
   const [InFavourites, setFavourite] = useState<boolean>(inFavourite)
@@ -17,7 +20,9 @@ export const Item = ({ task, isComplete, inFavourite }: { task: string, isComple
             onClick={() => {
               if (!IsComplete) {
                 /* Mark item as complete */
-                console.log(task)
+                setItems((curItems) => {
+                  return curItems.filter(({ id: curID }) => curID !== id)
+                })
               }
               setComplete((cur) => !cur)
             }}
