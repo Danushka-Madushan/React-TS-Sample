@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { States } from '../constants/store'
 
-export const Item = ({ task, isComplete }: { task: string, isComplete: boolean }) => {
+export const Item = ({ task, isComplete, inFavourite }: { task: string, isComplete: boolean, inFavourite: boolean }) => {
   const [IconCheck, setCheckIcon] = useState<{ path: string }>(isComplete ? States.Check.onChange : States.Check.Initial)
-  const [IconFav, setRemoveIcon] = useState<{ path: string }>(States.Fav.Initial)
+  const [IconFav, setRemoveIcon] = useState<{ path: string }>(inFavourite ? States.Fav.onChange : States.Fav.Initial)
+  const [InFavourites, setFavourite] = useState<boolean>(inFavourite)
   const [IsComplete, setComplete] = useState<boolean>(isComplete)
 
   return (
@@ -32,8 +33,15 @@ export const Item = ({ task, isComplete }: { task: string, isComplete: boolean }
       <div className='flex items-center'>
         <section className='pr-3'>
           <svg
-            onMouseEnter={() => setRemoveIcon(States.Fav.onChange)}
-            onMouseLeave={() => setRemoveIcon(States.Fav.Initial)}
+            onMouseEnter={() => InFavourites ? false : setRemoveIcon(States.Fav.onChange)}
+            onMouseLeave={() => InFavourites ? false : setRemoveIcon(States.Fav.Initial)}
+            onClick={() => {
+              if (!IsComplete) {
+                /* Add item to favourites */
+                console.log(task)
+              }
+              setFavourite((cur) => !cur)
+            }}
             xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
             <path fill="#78bafd" d={IconFav.path} />
           </svg>
