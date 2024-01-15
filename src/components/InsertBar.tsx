@@ -7,21 +7,17 @@ export const InsertBar = ({ setItems }: {
   const [newItem, setnewItem] = useState<string>('')
 
   const addItem = () => {
+    if (newItem.length === 0) {
+      return
+    }
     setItems((curItems) => {
-      return [...curItems, { isComplete: false, inFavourite: false, task: newItem }]
+      return [...curItems, { isComplete: false, inFavourite: false, task: newItem, id: crypto.randomUUID() }]
     })
     setnewItem('')
   }
 
   const onFormSubmit = (event: FormEvent) => {
     event.preventDefault()
-    addItem()
-  }
-
-  const onAddClick = () => {
-    if (newItem.length === 0) {
-      return
-    }
     addItem()
   }
 
@@ -55,7 +51,7 @@ export const InsertBar = ({ setItems }: {
           </svg>
         </div>
         <div>
-          <button type="button" onClick={onAddClick} className={`text-[12px] px-2 py-1 text-[#ffffffb9] border-[1px] border-[#ffffff41] ${ newItem.length !== 0 ? '' : 'hover:cursor-not-allowed' }`}>Add</button>
+          <button type="button" onClick={addItem} className={`text-[12px] px-2 py-1 text-[#ffffffb9] border-[1px] border-[#ffffff41] ${ newItem.length !== 0 ? '' : 'hover:cursor-not-allowed' }`}>Add</button>
         </div>
       </div>
     </div>

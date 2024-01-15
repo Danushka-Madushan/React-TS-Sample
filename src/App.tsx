@@ -9,8 +9,8 @@ const App = () => {
   return (
     <div className='mx-4'>
       <InsertBar setItems={setItems}/>
-      {items.map(({ task, isComplete, inFavourite }) => (
-        <Item key={task} task={task} isComplete={isComplete} inFavourite={inFavourite}/>
+      {items.map(({ task, isComplete, inFavourite, id }) => (
+        <Item key={id} task={task} id={id} isComplete={isComplete} inFavourite={inFavourite} setItems={setItems}/>
       ))}
     </div>
   )
