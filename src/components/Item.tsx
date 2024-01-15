@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { States } from '../constants/store'
 
 export const Item = ({ task, isComplete }: { task: string, isComplete: boolean }) => {
-  const [IconCheck, setCheckIcon] = useState<{ path: string }>(States.Check.Initial)
+  const [IconCheck, setCheckIcon] = useState<{ path: string }>(isComplete ? States.Check.onChange : States.Check.Initial)
   const [IconFav, setRemoveIcon] = useState<{ path: string }>(States.Fav.Initial)
   const [IsComplete, setComplete] = useState<boolean>(isComplete)
 
