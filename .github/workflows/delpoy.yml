@@ -19,6 +19,9 @@ concurrency:
   group: 'pages'
   cancel-in-progress: true
 
+env:
+  VITE_TOKEN: ${{ secrets.VITE_TOKEN }}
+
 jobs:
   compatibility-check:
     runs-on: ubuntu-latest
