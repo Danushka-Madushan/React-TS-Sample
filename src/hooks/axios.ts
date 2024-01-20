@@ -6,9 +6,6 @@ export const Axios = <T>(url: string, method: 'GET' | 'POST', body: object) => {
         baseURL: API,
         url: url,
         method: method,
-        data: {
-            ...body,
-            auth: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.O0FKaqhJjEZgCAVfZoLz6Pjd7Gs9Kv6qi0P8RyATjaE'
-        }
+        data: { ...body, auth: import.meta.env.VITE_TOKEN }
     })
 }
