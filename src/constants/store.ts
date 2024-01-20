@@ -1,8 +1,6 @@
 export const Items: {
   isComplete: boolean, inFavourite: boolean, task: string, id: string
-}[] = [
-  { isComplete: false, inFavourite: true, task: 'Github is Awesome', id: crypto.randomUUID() }
-]
+}[] = []
 
 export const States = {
   Check: {
