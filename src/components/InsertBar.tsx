@@ -1,19 +1,32 @@
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 import { Items, States } from '../constants/store'
+import { Axios } from '../hooks/axios'
+import { useCookies } from 'react-cookie'
+import { v4 as uuidv4 } from 'uuid';
+
+const InsertTask = async (content: {
+  group: string, id: string, isComplete: boolean,
+  inFavourite: boolean, task: string
+}) => {
+  await Axios('/', 'POST', { "service": "to-do", "action": "insert", "content": content })
+}
 
 export const InsertBar = ({ setItems }: {
   setItems: Dispatch<SetStateAction<typeof Items>>
 }) => {
   const [newItem, setnewItem] = useState<string>('')
+  const [cookies] = useCookies(['group'])
 
-  const addItem = () => {
+  const addItem = async () => {
     if (newItem.length === 0) {
       return
     }
-    setItems((curItems) => {
-      return [...curItems, { isComplete: false, inFavourite: false, task: newItem, id: crypto.randomUUID() }]
-    })
+
+    const newTask = { isComplete: false, inFavourite: false, task: newItem, id: uuidv4() }
+    setItems((curItems) => [...curItems, newTask])
+
     setnewItem('')
+    await InsertTask({ group: cookies.group, ...newTask })
   }
 
   const onFormSubmit = (event: FormEvent) => {
