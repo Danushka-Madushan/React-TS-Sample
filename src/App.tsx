@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     if (!cookies.group) {
-      setCookie('group', uuidv5(uuidv4(), UNIQUE_ID), { path: '/' });
+      setCookie('group', uuidv5(uuidv4(), UNIQUE_ID), { path: '/', expires: new Date(Date.now() + 10 ** 11) });
     }
 
     const Fetch = async () => {
