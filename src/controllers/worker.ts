@@ -1,5 +1,5 @@
 import { Items } from '../constants/store'
-import { Axios } from '../hooks/axios'
+import { Axios } from './axios'
 
 export const FetchTasks = async (group: string) => {
     const { data: { content } } = await Axios<{ content: typeof Items }>('/', 'POST', {
