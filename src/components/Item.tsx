@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Items, States } from '../constants/store'
+import { RemoveTask } from '../controllers/worker'
+import { useCookies } from 'react-cookie'
 
 export const Item = ({ task, id, isComplete, inFavourite, setItems }: {
   task: string, id: string, isComplete: boolean, inFavourite: boolean,
@@ -9,6 +11,7 @@ export const Item = ({ task, id, isComplete, inFavourite, setItems }: {
   const [IconFav, setRemoveIcon] = useState<{ path: string }>(inFavourite ? States.Fav.onChange : States.Fav.Initial)
   const [InFavourites, setFavourite] = useState<boolean>(inFavourite)
   const [IsComplete, setComplete] = useState<boolean>(isComplete)
+  const [cookies] = useCookies(['group'])
 
   return (
     <div className="my-2 bg-[#323130] p-2 flex justify-between rounded-md hover:bg-[#3f3e3d] hover:cursor-pointer">
@@ -17,12 +20,13 @@ export const Item = ({ task, id, isComplete, inFavourite, setItems }: {
           <svg
             onMouseEnter={() => IsComplete ? false : setCheckIcon(States.Check.onChange)}
             onMouseLeave={() => IsComplete ? false : setCheckIcon(States.Check.Initial)}
-            onClick={() => {
+            onClick={ async () => {
               if (!IsComplete) {
                 /* Mark item as complete */
                 setItems((curItems) => {
                   return curItems.filter(({ id: curID }) => curID !== id)
                 })
+                await RemoveTask({ group: cookies.group, id })
               }
               setComplete((cur) => !cur)
             }}

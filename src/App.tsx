@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
+import { v5, v4 } from 'uuid';
 import { InsertBar } from './components/InsertBar'
 import { Item } from './components/Item'
 import { Items } from './constants/store'
-import { Axios } from './hooks/axios'
 import { Loader } from './components/Loader'
 import { useCookies } from 'react-cookie'
 import { UNIQUE_ID } from './config/config'
-import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
+import { FetchTasks } from './controllers/worker'
 
 const App = () => {
   const [cookies, setCookie] = useCookies(['group'])
@@ -15,15 +15,12 @@ const App = () => {
 
   useEffect(() => {
     if (!cookies.group) {
-      setCookie('group', uuidv5(uuidv4(), UNIQUE_ID), { path: '/', expires: new Date(Date.now() + 10 ** 11) });
+      setCookie('group', v5(v4(), UNIQUE_ID), { path: '/', expires: new Date(Date.now() + 10 ** 11) });
     }
 
     const Fetch = async () => {
       setLoading(true)
-      const { data: { content } } = await Axios<{ content: typeof Items }>('/', 'POST', {
-        "service": "to-do", "action": "get",
-        "content": { "group": cookies.group }
-      })
+      const content = await FetchTasks(cookies.group)
       setLoading(false)
       setItems(content)
     }
